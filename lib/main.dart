@@ -10,8 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() {
   runApp(
     DevicePreview(
-      isToolbarVisible: true,
-      enabled: true,
+      isToolbarVisible: true, 
+      enabled: false,
       defaultDevice: Devices.ios.iPhone13ProMax,
       tools: const [...DevicePreview.defaultTools],
       builder: (context) => const MyApp(),
