@@ -1,9 +1,9 @@
-import 'package:demo/cubit/counter_cubit.dart';
+import 'package:demo/features/home/presentation/bloc/counter_cubit.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:demo/router_config.dart' as router_config;
-import 'package:demo/theme/dark_theme.dart' as dark_theme;
-import 'package:demo/theme/light_theme.dart' as light_theme;
+import 'package:demo/routes/router_config.dart' as router_config;
+import 'package:demo/shared/themes/dark_theme.dart' as dark_theme;
+import 'package:demo/shared/themes/light_theme.dart' as light_theme;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
