@@ -1,3 +1,4 @@
+import 'package:demo/generated/strings.g.dart';
 import 'package:demo/shared/assets/app_images.dart';
 import 'package:demo/features/home/presentation/bloc/counter_cubit.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final counterBlocprovider = BlocProvider.of<CounterCubit>(context);
+    final t = Translations.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(AppImages.logo, height: 80, fit: BoxFit.cover),
@@ -25,7 +27,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('You have pushed the button this many times:'),
+            Text(t.save),
             BlocBuilder<CounterCubit, int>(
               bloc: counterBlocprovider,
               builder: (context, counter) {
@@ -36,7 +38,14 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ElevatedButton(
-              onPressed: () => context.push("/nextPage"),
+              onPressed: () {
+                final currentLocale = LocaleSettings.currentLocale.languageCode;
+                if (currentLocale == 'bn') {
+                  LocaleSettings.setLocaleRaw('en');
+                } else {
+                  LocaleSettings.setLocaleRaw('bn');
+                }
+              },
               child: Text('Next Page'),
             ),
           ],
@@ -44,9 +53,10 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          counterBlocprovider.increment();
+        //   counterBlocprovider.increment();
+            context.push('/nextPage');
         },
-        tooltip: 'Increment',
+        tooltip: t.login.success,
         child: const Icon(Icons.add),
       ),
     );

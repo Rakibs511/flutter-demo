@@ -5,16 +5,19 @@ import 'package:demo/routes/router_config.dart' as router_config;
 import 'package:demo/shared/themes/dark_theme.dart' as dark_theme;
 import 'package:demo/shared/themes/light_theme.dart' as light_theme;
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:demo/generated/strings.g.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(
-    DevicePreview(
-      isToolbarVisible: true, 
-      enabled: false,
-      defaultDevice: Devices.ios.iPhone13ProMax,
-      tools: const [...DevicePreview.defaultTools],
-      builder: (context) => const MyApp(),
+    TranslationProvider(
+      child: DevicePreview(
+        isToolbarVisible: true,
+        enabled: false,
+        defaultDevice: Devices.ios.iPhone13ProMax,
+        tools: const [...DevicePreview.defaultTools],
+        builder: (context) => const MyApp(),
+      ),
     ),
   );
 }
@@ -27,13 +30,20 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => CounterCubit(),
       child: MaterialApp.router(
+        locale: TranslationProvider.of(context).flutterLocale,
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocaleUtils.supportedLocales,
         routerConfig: router_config.RouterConfig.router,
         debugShowCheckedModeBanner: false,
         title: 'Nourish Demo App',
         theme: light_theme.LightTheme.light,
         darkTheme: dark_theme.DarkTheme.dark,
-        themeMode: ThemeMode.system, 
-      
+        themeMode: ThemeMode.system,
+
         // Add any additional configurations or themes here
         // For example, you can add custom fonts, colors, etc.
         // You can also define your own themes or styles here
