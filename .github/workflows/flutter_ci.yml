@@ -48,6 +48,25 @@ jobs:
         with:
           name: web-build
           path: build/web
+          
+      - name: 📦 Create GitHub Release with APK
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: Release ${{ github.ref_name }}
+          body: |
+            🎉 New Flutter Release
+            - Version: ${{ github.ref_name }}
+            - Platform: Android
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🧷 Upload APK to GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: build/app/outputs/flutter-apk/app-release.apk
+
 
   ios:
     name: 🍏 iOS Build (Unsigned)
