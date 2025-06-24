@@ -50,29 +50,25 @@ jobs:
           path: build/web
           
 
-      - name: Send Telegram Notification
-        env:
-            TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-            TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-            curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
-            -d chat_id=$TELEGRAM_CHAT_ID \
-            -d text="🚀 Build ${{ github.workflow }} #${{ github.run_number }} on branch ${{ github.ref_name }} finished with status: ${{ job.status }}."
       - name: ✅ Notify on Success
         if: success()
         env:
             TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
             TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-            curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
-            -d chat_id=$TELEGRAM_CHAT_ID \
-            -d parse_mode=Markdown \
-            -d text="✅ *Build Succeeded!*\n\n*Repo:* `${{ github.repository }}`\n*Branch:* `${{ github.ref_name }}`\n*Commit:* `${{ github.event.head_commit.message }}`\n*Author:* `${{ github.actor }}`\n\n[🔍 View Build Log](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
-            -d reply_markup='{
-                "inline_keyboard": [[
-                {"text": "📦 Download APK", "url": "https://github.com/YOUR_USER/YOUR_REPO/releases/download/${{ github.ref_name }}/app-release.apk"}
-                ]]
-            }'
+            curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            -d chat_id="$TELEGRAM_CHAT_ID" \
+            -d parse_mode="Markdown" \
+            -d text="✅ *Build Succeeded!*
+
+            *Repo:* \`${{ github.repository }}\`
+            *Branch:* \`${{ github.ref_name }}\`
+            *Commit:* \`${{ github.event.head_commit.message }}\`
+            *Author:* \`${{ github.actor }}\`
+
+            [🔍 View Build Log](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
+                -d reply_markup="$(jq -nc --arg url "https://github.com/Rakibs511/flutter-demo/releases/download/${{ github.ref_name }}/app-release.apk" \
+                '{"inline_keyboard":[[{"text":"📦 Download APK","url":$url}]]}')"
 
       - name: ❌ Notify on Failure
         if: failure()
@@ -80,10 +76,17 @@ jobs:
             TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
             TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-            curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
-            -d chat_id=$TELEGRAM_CHAT_ID \
-            -d parse_mode=Markdown \
-            -d text="❌ *Build Failed!*\n\n*Repo:* `${{ github.repository }}`\n*Branch:* `${{ github.ref_name }}`\n*Commit:* `${{ github.event.head_commit.message }}`\n*Author:* `${{ github.actor }}`\n\n[🧪 View Failed Build](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            -d chat_id="$TELEGRAM_CHAT_ID" \
+            -d parse_mode="Markdown" \
+            -d text="❌ *Build Failed!*
+
+            *Repo:* \`${{ github.repository }}\`
+            *Branch:* \`${{ github.ref_name }}\`
+            *Commit:* \`${{ github.event.head_commit.message }}\`
+            *Author:* \`${{ github.actor }}\`
+
+            [🧪 View Failed Build](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
 
   ios:
     name: 🍏 iOS Build (Unsigned)
@@ -124,15 +127,20 @@ jobs:
             TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
             TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-            curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
-            -d chat_id=$TELEGRAM_CHAT_ID \
-            -d parse_mode=Markdown \
-            -d text="✅ *Build Succeeded!*\n\n*Repo:* `${{ github.repository }}`\n*Branch:* `${{ github.ref_name }}`\n*Commit:* `${{ github.event.head_commit.message }}`\n*Author:* `${{ github.actor }}`\n\n[🔍 View Build Log](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
-            -d reply_markup='{
-                "inline_keyboard": [[
-                {"text": "📦 Download APK", "url": "https://github.com/YOUR_USER/YOUR_REPO/releases/download/${{ github.ref_name }}/app-release.apk"}
-                ]]
-            }'
+            curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            -d chat_id="$TELEGRAM_CHAT_ID" \
+            -d parse_mode="Markdown" \
+            -d text="✅ *Build Succeeded!*
+
+            *Repo:* \`${{ github.repository }}\`
+            *Branch:* \`${{ github.ref_name }}\`
+            *Commit:* \`${{ github.event.head_commit.message }}\`
+            *Author:* \`${{ github.actor }}\`
+
+            [🔍 View Build Log](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
+                -d reply_markup="$(jq -nc --arg url "https://github.com/Rakibs511/flutter-demo/releases/download/${{ github.ref_name }}/app-release.apk" \
+                '{"inline_keyboard":[[{"text":"📦 Download APK","url":$url}]]}')"
+
 
       - name: ❌ Notify on Failure
         if: failure()
@@ -140,7 +148,15 @@ jobs:
             TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
             TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-            curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
-            -d chat_id=$TELEGRAM_CHAT_ID \
-            -d parse_mode=Markdown \
-            -d text="❌ *Build Failed!*\n\n*Repo:* `${{ github.repository }}`\n*Branch:* `${{ github.ref_name }}`\n*Commit:* `${{ github.event.head_commit.message }}`\n*Author:* `${{ github.actor }}`\n\n[🧪 View Failed Build](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            -d chat_id="$TELEGRAM_CHAT_ID" \
+            -d parse_mode="Markdown" \
+            -d text="❌ *Build Failed!*
+
+            *Repo:* \`${{ github.repository }}\`
+            *Branch:* \`${{ github.ref_name }}\`
+            *Commit:* \`${{ github.event.head_commit.message }}\`
+            *Author:* \`${{ github.actor }}\`
+
+            [🧪 View Failed Build](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+
