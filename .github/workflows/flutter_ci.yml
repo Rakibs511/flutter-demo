@@ -20,7 +20,7 @@ jobs:
       - name: 💻 Set up Flutter SDK
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0' # Replace with your version if needed
+          flutter-version: '3.32.4' # Replace with your version if needed
 
       - name: 📦 Install dependencies
         run: flutter pub get
