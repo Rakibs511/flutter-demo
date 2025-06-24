@@ -1,4 +1,5 @@
 import 'package:demo/features/home/presentation/bloc/counter_cubit.dart';
+import 'package:demo/generated/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,6 +10,7 @@ class NextPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = TextEditingController();
     final counterBlocprovider = BlocProvider.of<CounterCubit>(context);
+    final t = Translations.of(context);
     return Scaffold(
       body: Center(
         child: Column(
@@ -19,7 +21,7 @@ class NextPage extends StatelessWidget {
               builder: (context, counter) {
                 return Column(
                   children: [
-                    Text("Next Page $counter"),
+                    Text(t.hello(name: counter)),
                     TextField(
                       decoration: InputDecoration(
                         labelText: 'Counter Value',
