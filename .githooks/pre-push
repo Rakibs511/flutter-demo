@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Get the name of the branch being pushed
+branch_name=$(git symbolic-ref --short HEAD)
+
+if [[ "$branch_name" == "main" || "$branch_name" == "dev" ]]; then
+  echo "🚫 Direct push to '$branch_name' is disabled. Please push to a feature branch and create a PR."
+  exit 1
+fi
