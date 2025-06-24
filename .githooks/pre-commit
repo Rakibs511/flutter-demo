@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "🧼 Running flutter test..."
+flutter test
+
+echo "🔍 Running flutter analyze..."
+flutter analyze
+
+if [ $? -ne 0 ]; then
+  echo "❌ Code analysis failed. Commit aborted."
+  exit 1
+fi
+
+echo "✅ Pre-commit checks passed!"
